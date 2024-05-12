@@ -1,28 +1,58 @@
-name: Build and Publish Electron App
+name: Build and Release Electron App
 
 on:
   push:
     branches:
-      - master
+      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [win32, darwin, linux]
 
-    steps:        
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set Up Node.js
-        uses: actions/setup-node@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build Electron App
-        run: npm run make
+    - name: Build and Package Application
+      run: npm run make
+      env:
+        CI: true
 
-      - name: Publish Releases
-        run: npm run publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.platform }}
+        path: out/make/**
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: out
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: out/**/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
