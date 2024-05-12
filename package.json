@@ -1,11 +1,10 @@
 {
-  "name": "chatgpt-electron-app",
-  "version": "1.0.0",
+  "name": "chatgpt",
+  "version": "1.0.1",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "release": "electron-builder --win --x64 --publish=never"
+    "dev": "electron .",
+    "prod": "electron-builder --win --linux --mac"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +20,9 @@
   "devDependencies": {
     "electron": "^30.0.3",
     "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5"
   }
 }
