@@ -15,9 +15,7 @@ jobs:
               uses: actions/checkout@v1
 
             - name: Install Node.js, NPM and Yarn
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 16
+              uses: actions/setup-node@v4.0.2
 
             - name: Compile Electron App
               uses: x6Pnda/action-electron-compiler@v1.0.1
