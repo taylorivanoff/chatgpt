@@ -3,9 +3,6 @@
 ## Description
 Electron-based desktop application for ChatGPT, allowing users to access ChatGPT's conversational AI capabilities within a standalone app.
 
-## Dependencies
-- Electron: 30.0.3
-
 ## Development
 1. Clone the repository to your local machine.
 2. Install dependencies using npm install.
