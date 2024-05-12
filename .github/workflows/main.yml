@@ -9,10 +9,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        platform: [win32, darwin, linux]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            PLATFORM: 'linux'
+          - os: windows-latest
+            PLATFORM: 'win32'
+          - os: macos-latest
+            PLATFORM: 'darwin'
 
     steps:
     - name: Checkout code
@@ -21,7 +28,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'
+        node-version: '20'
 
     - name: Install dependencies
       run: npm install
