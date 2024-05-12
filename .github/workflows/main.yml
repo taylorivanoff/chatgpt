@@ -1,15 +1,23 @@
-name: Build and Publish Electron App
+name: Build/release
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    release:
+        runs-on: ${{ matrix.os }}
 
-    steps:        
-      - name: Electron-builder compiler action
-        uses: x6pnda/action-electron-compiler@v1.0.1
-    
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-latest]
+
+        steps:
+            - name: Check out Git repository
+              uses: actions/checkout@v1
+
+            - name: Install Node.js, NPM and Yarn
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 16
+
+            - name: Compile Electron App
+              uses: x6Pnda/action-electron-compiler@v1
