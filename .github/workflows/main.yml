@@ -26,6 +26,14 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
 
+    - name: Cache Node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Install dependencies
       run: npm install
 
