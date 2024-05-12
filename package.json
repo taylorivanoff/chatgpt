@@ -3,26 +3,38 @@
   "version": "1.0.1",
   "main": "main.js",
   "scripts": {
-    "dev": "electron .",
-    "prod": "electron-builder --win --linux --mac"
+    "start": "electron .",
+    "release": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": "Taylor Ivanoff",
   "license": "ISC",
   "description": "",
-  "win": {
-    "icon": "icon.png"
-  },
-  "build": {
-    "appId": "io.github.taylorivanoff.chatgpt",
-    "productName": "ChatGPT"
-  },
   "devDependencies": {
     "electron": "^30.0.3",
-    "electron-builder": "^24.13.3"
-  },
-  "dependencies": {
-    "axios": "^1.6.8",
+    "electron-builder": "^24.13.3",
     "dotenv": "^16.4.5"
+  },
+  "build": {
+    "appId": "com.taylorivanoff.chatgpt",
+    "productName": "ChatGPT",
+    "asar": true,
+    "publish": {
+      "provider": "github",
+      "token": "${GITHUB_TOKEN}"
+    },
+    "mac": {
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "icon": "build/icon.png"
+    },
+    "linux": {
+      "icon": "build/icon.png"
+    },
+    "extraMetadata": {
+      "APP_NAME": "${env:APP_NAME}",
+      "APP_URL": "${env:APP_URL}"
+    }
   }
 }

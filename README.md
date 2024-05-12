@@ -1,15 +1,12 @@
-# ChatGPT Electron Desktop App
+# ChatGPT for Windows, macOS and Linux
 
 ## Description
-An Electron app for ChatGPT, allowing users to access ChatGPT's conversational AI capabilities within a standalone desktop application. The wrapper enables users to log in via OAuth and interact with ChatGPT in a secure environment.
-
-## Features
-- Electron-based desktop application for ChatGPT.
+Electron-based desktop application for ChatGPT, allowing users to access ChatGPT's conversational AI capabilities within a standalone app.
 
 ## Dependencies
 - Electron: 30.0.3
 
-## Usage
+## Development
 1. Clone the repository to your local machine.
 2. Install dependencies using npm install.
 3. Run the application using npm start.
