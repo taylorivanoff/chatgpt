@@ -1,58 +1,39 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
-const { FuseV1Options, FuseVersion } = require('@electron/fuses');
+const { FuseVersion, FuseV1Options } = require('@electron/fuses');
 
 module.exports = {
-  publishers: [
-    {
-      name: '@electron-forge/publisher-github',
-      config: {
-        repository: {
-          owner: 'taylorivanoff',
-          name: 'chatgpt'
-        },
-        draft: true // Set to false to publish immediately
-      }
+  publishers: [{
+    name: '@electron-forge/publisher-github',
+    config: {
+      repository: {
+        owner: 'taylorivanoff',
+        name: 'chatgpt'
+      },
+      draft: true
     }
-  ],
+  }],
   packagerConfig: {
     asar: true,
     platforms: ["darwin", "win32", "linux"]
   },
-  rebuildConfig: {},
   makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-zip',
-      config: {},
-      platforms: ["darwin", "win32", "linux"]
-    },
-    {
-      name: '@electron-forge/maker-deb',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {},
-    },
+    { name: '@electron-forge/maker-squirrel', config: {} },
+    { name: '@electron-forge/maker-zip', config: {}, platforms: ["darwin", "win32", "linux"] },
+    { name: '@electron-forge/maker-deb', config: {} },
+    { name: '@electron-forge/maker-rpm', config: {} },
   ],
   plugins: [
-    {
-      name: '@electron-forge/plugin-auto-unpack-natives',
-      config: {},
-    },
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
+    { name: '@electron-forge/plugin-auto-unpack-natives', config: {} },
     new FusesPlugin({
       version: FuseVersion.V1,
-      [FuseV1Options.RunAsNode]: false,
-      [FuseV1Options.EnableCookieEncryption]: true,
-      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
-      [FuseV1Options.EnableNodeCliInspectArguments]: false,
-      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
-      [FuseV1Options.OnlyLoadAppFromAsar]: true,
-    }),
-  ],
+      options: {
+        [FuseV1Options.RunAsNode]: false,
+        [FuseV1Options.EnableCookieEncryption]: true,
+        [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+        [FuseV1Options.EnableNodeCliInspectArguments]: false,
+        [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+        [FuseV1Options.OnlyLoadAppFromAsar]: true
+      }
+    })
+  ]
 };

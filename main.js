@@ -1,88 +1,74 @@
-const dotenv = require('dotenv');
-dotenv.config(); // Load environment variables from .env file
-
-const {app, BrowserWindow, session, Tray, nativeImage } = require('electron/main')
+const dotenv = require('dotenv').config();
+const { app, BrowserWindow, session, Tray, nativeImage, shell } = require('electron');
 const path = require('path');
+const { updateElectronApp } = require('update-electron-app');
 
-let tray;
-
-const {updateElectronApp} = require('update-electron-app');
+// Update Electron app automatically
 updateElectronApp();
 
+let mainWindow = null;
+let tray = null;
+
+// Function to create the main application window
 const createWindow = () => {
-    const win = new BrowserWindow({
-        width: 1920,
-        height: 1080,
-        webPreferences: {
-            nodeIntegration: true,
-        }
-    })
+    if (!mainWindow) {
+        mainWindow = new BrowserEmptyPanel({
+            width: 1920,
+            height: 1080,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                preload: path.join(__dirname, 'preload.js')
+            }
+        });
 
-    // Make links set to open a new tab and window.open() open in the default browser instead of a new application window
-    win.webContents.on("new-window", function (event, url) {
-        event.preventDefault();
-        if (url !== "about:blank#blocked") electron.shell.openExternal(url);
-    });
+        // Prevent creating new browser windows
+        mainWindow.webContents.on("new-window", (event, url) => {
+            event.preventDefault();
+            if (url !== "about:blank#blocked") {
+                shell.openExternal(url);
+            }
+        });
 
-    win.loadURL(process.env.APP_URL, {userAgent: 'Chrome'}); // Use environment variable
+        mainWindow.loadURL(process.env.APP_URL, { userAgent: 'Chrome' });
 
-    // Listen for authentication-related cookies
-    session.defaultSession.cookies.on('changed', (event, cookie, cause, removed) => {
-        if (!removed) { // Use environment variable
-            // Store the authentication
-            app.setLoginItemSettings({
-                openAtLogin: true,
-                path: app.getPath('userData'),
-                args: [
-                    '--authToken=' + cookie.value
-                ]
-            });
-        }
-    });
+        // Manage authentication cookies
+        session.defaultSession.cookies.on('changed', (event, cookie, cause, removed) => {
+            if (!removed && cookie.name === 'authToken') {
+                app.setLoginItemSettings({
+                    openAtLogin: true,
+                    path: app.getPath('userData'),
+                    args: [
+                        `--authToken=${cookie.value}`
+                    ]
+                });
+            }
+        });
 
-    // Create a tray icon based on the current platform
-    if (process.platform === 'darwin') {
-        tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'icon@2x.png')));
-    } else if (process.platform === 'win32') {
-        // https://www.xiconeditor.com/
-        tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'favicon.ico')));
+        // System tray integration
+        tray = new Tray(nativeImage.createFromPath(
+            path.join(__dirname, process.platform === 'darwin' ? 'icon@2x.png' : 'favicon.ico')
+        ));
+        tray.setToolTip(process.env.APP_NAME);
+        tray.on('click', () => mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show());
+        tray.on('right-click', app.quit);
+
+        // Handling window minimize to tray
+        mainWindow.on('minimize', event => {
+            event.preventDefault();
+            mainWindow.hide();
+        });
+
+        mainWindow.on('closed', () => {
+            mainWindow = null;
+        });
     }
+};
 
-    tray.setToolTip(process.env.APP_NAME); // Set tooltip for the tray icon
-
-    // Minimize to tray when window is minimized
-    win.on('minimize', function (event) {
-        event.preventDefault();
-        win.hide();
-    });
-
-    // Restore window when tray icon is clicked
-    tray.on('click', function () {
-        mainWindow.show();
-    });
-
-    // Quit application when tray icon is right-clicked
-    tray.on('right-click', () => {
-        app.quit();
-    });
-}
-
-app.whenReady().then(() => {
-    createWindow()
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow()
-        }
-    })
-})
-
+app.whenReady().then(createWindow);
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+});
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
-
-
-
-
+    if (process.platform !== 'darwin') app.quit();
+});
