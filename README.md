@@ -1,4 +1,4 @@
-# Native Website App for Windows, macOS and Linux
+# Native Website Wrapper for Windows, macOS and Linux
 
 ## Description
 Electron-based desktop application that houses a native wrapper for websites, useful for standalone apps such as ChatGPT, YouTube, Twitch, etc. Configurable in the .env. Stores secure cookie locally to remain signed in.
