@@ -1,6 +1,6 @@
 {
-  "name": "chatgpt-desktop-app",
-  "version": "1.0.0",
+  "name": "electron-app",
+  "version": "1.0.1",
   "description": "A desktop application built with Electron.",
   "main": "main.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "com.example.chatgpt",
-    "productName": "ChatGPT",
+    "appId": "com.example.app",
+    "productName": "Name",
     "directories": {
       "output": "build"
     },
