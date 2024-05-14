@@ -1,36 +1,48 @@
 {
-  "name": "chatgpt",
+  "name": "chatgpt-desktop-app",
   "version": "1.0.0",
+  "description": "A desktop application built with Electron.",
   "main": "main.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/taylorivanoff/chatgpt.git"
+  "build": {
+    "appId": "com.example.chatgpt",
+    "productName": "ChatGPT",
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "icons/icon.png"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "icons/mac/icon@2x.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "icons/icon.png"
+    }
   },
-  "keywords": [],
   "author": "Taylor Ivanoff",
-  "license": "ISC",
-  "description": "Electron-based desktop application for ChatGPT",
+  "license": "MIT",
   "devDependencies": {
-    "@electron-forge/cli": "^7.4.0",
-    "@electron-forge/maker-deb": "^7.4.0",
-    "@electron-forge/maker-rpm": "^7.4.0",
-    "@electron-forge/maker-squirrel": "^7.4.0",
-    "@electron-forge/maker-zip": "^7.4.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
-    "@electron-forge/plugin-fuses": "^7.4.0",
-    "@electron/fuses": "^1.8.0",
-    "@electron-forge/publisher-github": "^7.4.0",
-    "electron": "^30.0.3"
+    "electron": "30.0.4",
+    "electron-builder": "^22.0.0"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "update-electron-app": "^3.0.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "dotenv": "^16.4.5"
   }
 }
