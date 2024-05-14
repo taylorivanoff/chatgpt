@@ -9,8 +9,8 @@ You can configure the app name and url in your .env. Also stores secure cookie w
 2. `cp .env.example .env`.
 3. Edit .env to website of choice.
 4. Install dependencies using npm install.
-5. Create icon.png for app.
-6. Create an installer for the app with `npm run make`, output is /out/your-platform.
+5. Create icon.png (for Windows) and or icon@2x.png (for macOS) for app.
+6. Create an installer for the app with `npm run make`, installer is in /out/make.
 
 ## Development
 1. Clone the repository to your local machine.
