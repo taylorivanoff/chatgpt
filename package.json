@@ -1,6 +1,6 @@
 {
   "name": "electron-app",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A desktop application built with Electron.",
   "main": "main.js",
   "scripts": {
@@ -41,8 +41,5 @@
   "devDependencies": {
     "electron": "30.0.4",
     "electron-builder": "^22.0.0"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
   }
 }
