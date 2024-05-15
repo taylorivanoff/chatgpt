@@ -19,21 +19,21 @@
         "nsis",
         "zip"
       ],
-      "icon": "icons/icon.png"
+      "icon": "icon.png"
     },
     "mac": {
       "target": [
         "dmg",
         "zip"
       ],
-      "icon": "icons/mac/icon@2x.png"
+      "icon": "icon.png"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb"
       ],
-      "icon": "icons/icon.png"
+      "icon": "icon.png"
     }
   },
   "author": "Taylor Ivanoff",

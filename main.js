@@ -13,7 +13,7 @@ function createWindow() {
         },
     });
 
-    mainWindow.loadURL('https://chatgpt.com/?oai-dm=1'); // Replace with the website you want to wrap
+    mainWindow.loadURL(''); // Replace with the website you want to wrap
 
     // Optional: Open DevTools for debugging
     // mainWindow.webContents.openDevTools();
