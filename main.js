@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, Menu} = require('electron');
 const path = require('path');
 
 function createWindow() {
@@ -17,6 +17,8 @@ function createWindow() {
 
     // Optional: Open DevTools for debugging
     // mainWindow.webContents.openDevTools();
+
+    Menu.setApplicationMenu(null);
 }
 
 app.on('ready', createWindow);
